@@ -17,7 +17,10 @@ import org.springframework.stereotype.Service;
 import com.itextpdf.layout.Document;
 
 import javax.swing.text.TabExpander;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Base64;
@@ -27,9 +30,52 @@ import java.util.List;
 @Service
 public class PDFGenerator implements IPDFGenerator {
 
-    public static void main(String[] args) throws FileNotFoundException {
 
-        LocalDate today = LocalDate.now();
+    public static Cell getHeaderTextCell(String textValue) {
+
+        return new Cell().add(textValue).setBold().setBorder(Border.NO_BORDER).setTextAlignment(TextAlignment.RIGHT);
+
+    }
+
+    public static Cell getHeaderTextCellValue(String textValue) {
+
+        return new Cell().add(textValue).setBorder(Border.NO_BORDER).setTextAlignment(TextAlignment.LEFT);
+
+    }
+
+    public static Cell getBillingandShippingCell(String textValue) {
+
+        return new Cell().add(textValue).setFontSize(12f).setBold().setBorder(Border.NO_BORDER).setTextAlignment(TextAlignment.LEFT);
+
+    }
+
+    public static Cell getCell10fLeft(String textValue, Boolean isBold) {
+
+        Cell myCell = new Cell().add(textValue).setFontSize(10f).setBorder(Border.NO_BORDER).setTextAlignment(TextAlignment.LEFT);
+        return isBold ? myCell.setBold() : myCell;
+
+    }
+
+    public static byte[] encodeFileToBase64(File file) throws IOException {
+
+        byte[] fileContent = new byte[(int) file.length()];
+
+
+            FileInputStream fileInputStream = new FileInputStream(file);
+            fileInputStream.read(fileContent);
+            return fileContent;
+
+
+    }
+
+
+    @Override
+    public byte[] generatePDF(PDFInformation pdfInformation) {
+        // Your logic to use the library here! don't forget to use the exceptions and of course handle it if is possible
+
+        try {
+            LocalDate today = LocalDate.now();
+
 
         String path = "invoice.pdf";
         PdfWriter pdfWriter = new PdfWriter(path);
@@ -162,41 +208,16 @@ public class PDFGenerator implements IPDFGenerator {
 
 
         document.close();
-
-    }
-
-    public static Cell getHeaderTextCell(String textValue) {
-
-        return new Cell().add(textValue).setBold().setBorder(Border.NO_BORDER).setTextAlignment(TextAlignment.RIGHT);
-
-    }
-
-    public static Cell getHeaderTextCellValue(String textValue) {
-
-        return new Cell().add(textValue).setBorder(Border.NO_BORDER).setTextAlignment(TextAlignment.LEFT);
-
-    }
-
-    public static Cell getBillingandShippingCell(String textValue) {
-
-        return new Cell().add(textValue).setFontSize(12f).setBold().setBorder(Border.NO_BORDER).setTextAlignment(TextAlignment.LEFT);
-
-    }
-
-    public static Cell getCell10fLeft(String textValue, Boolean isBold) {
-
-        Cell myCell = new Cell().add(textValue).setFontSize(10f).setBorder(Border.NO_BORDER).setTextAlignment(TextAlignment.LEFT);
-        return isBold ? myCell.setBold() : myCell;
-
-    }
+        File file = new File(path);
+        return encodeFileToBase64(file);
 
 
-    @Override
-    public Base64 generatePDF(PDFInformation pdfInformation) {
-        // Your logic to use the library here! don't forget to use the exceptions and of course handle it if is possible
+        } catch (IOException exception){
+            throw new RuntimeException("ERROR EN GENERAR PDF");
+        }
 
 
-        return null;
+
     }
 
 

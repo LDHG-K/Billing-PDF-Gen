@@ -6,5 +6,6 @@ import java.util.Base64;
 
 public interface IPDFGenerator {
 
-    Base64 generatePDF (PDFInformation pdfInformation);
+    byte[] generatePDF (PDFInformation pdfInformation);
+
 }

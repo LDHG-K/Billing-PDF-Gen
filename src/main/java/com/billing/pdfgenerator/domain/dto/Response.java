@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 @Getter
@@ -12,17 +13,17 @@ import java.time.format.DateTimeFormatter;
 public class Response {
 
     private String status;
-    private String creationDate;
-    private String pdfBase64;
+    private LocalDateTime creationDate;
+    private byte[] pdf;
 
     public Response(){
 
     }
 
-    public Response(String status, LocalDate creationDate, String pdfBase64) {
+    public Response(String status, LocalDateTime creationDate, byte[] pdf) {
         this.status = status;
-        this.creationDate = creationDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-        this.pdfBase64 = pdfBase64;
+        this.creationDate = creationDate;
+        this.pdf = pdf;
     }
 
     //TODO Add a status attribute that allows to know the status of the created pdf
