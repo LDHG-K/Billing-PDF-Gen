@@ -2,9 +2,10 @@ package com.billing.pdfgenerator.domain.services;
 
 import com.billing.pdfgenerator.domain.dto.Response;
 import com.billing.pdfgenerator.domain.gateways.PDFGeneratorService;
+import org.springframework.stereotype.Service;
 
 // TODO Add a tag to tell that this is a service for example @Repository is to say that a class is used for repository transactions
-
+@Service
 public class PDFBillingGenerator implements PDFGeneratorService {
 
     // TODO Inject a class that allows to create a pdf
