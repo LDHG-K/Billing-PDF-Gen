@@ -94,8 +94,5 @@ public class TestController {
 
     }
 
-    //TODO Create 4 operations given a list of elements without using pathVariable (clue JSON) + - / * Ready
-    //TODO Create a object person and return it Ready
-    //TODO Create a list of person then order by name or nick name and return it Ready
-    //TODO create a list of persons and delete the given one
+
 }
