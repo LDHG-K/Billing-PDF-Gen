@@ -3,37 +3,36 @@ package com.billing.pdfgenerator.infraestructure.controllers;
 import com.billing.pdfgenerator.domain.dto.Request;
 import com.billing.pdfgenerator.domain.dto.Response;
 import com.billing.pdfgenerator.domain.services.PDFBillingGenerator;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-// TODO ADD A PATH TO THE CONTROLLER
-// TODO ADD A POST METHOD TO CREATE A PDF AND RETURN IT INSIDE A DTO
-// TODO INJECT A SERVICE THAT ALLOW TO CREATE A PDF
-
 @RestController
-@RequestMapping("generator")
-@AllArgsConstructor
+@RequestMapping("/pdf-generator")
 public class GeneratorController {
-
-    // Example of a dependency injection
-    // private static final (Interface name) (any name);
 
     private final PDFBillingGenerator pdfBillingGenerator;
 
-    @PostMapping()
-    public Response generatePDF(@RequestBody Request request){
-
-        return pdfBillingGenerator.generatePDF(request);
-
+    @Autowired
+    public GeneratorController(PDFBillingGenerator pdfBillingGenerator) {
+        this.pdfBillingGenerator = pdfBillingGenerator;
     }
 
+    @PostMapping("/generate")
+    public ResponseEntity<byte[]> generatePDF(@RequestBody Request request) {
+        Response response = pdfBillingGenerator.generatePDF(request);
 
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_PDF);
+        headers.setContentDispositionFormData("filename", "invoice.pdf");
+        headers.setContentLength(response.getPdf().length);
 
+        return new ResponseEntity<>(response.getPdf(), headers, HttpStatus.OK);
+    }
 }
-// BUSCAR LAS 3 FORMAS DE INYECCION
-//INYECCION POR CONSTRUCTOR
-//INYECTOR POR METODO DE ACCESBILIDAD
-//INYECTOR POR INSTANCIA
