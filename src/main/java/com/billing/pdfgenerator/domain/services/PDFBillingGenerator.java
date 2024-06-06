@@ -8,7 +8,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Base64;
 
 @Service
 @AllArgsConstructor
@@ -18,12 +17,11 @@ public class PDFBillingGenerator implements PDFGeneratorService {
 
     @Override
     public Response generatePDF(Request request) {
+
+
         byte[] pdfBytes = pdfGenerator.generatePDF(request.getHtmlContent());
 
-        Response response = new Response();
-        response.setPdf(pdfBytes);
-        response.setCreationDate(LocalDateTime.now());
-        response.setStatus("OK");
+        Response response = Response.builder().pdfBytes(pdfBytes).creationDate(LocalDateTime.now()).status("OK").build();
 
         return response;
 
