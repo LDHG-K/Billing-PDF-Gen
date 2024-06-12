@@ -1,5 +1,5 @@
-# Billing-PDF-Gen
-**Description:** this service process a html content and generate a billing pdf
+# PDF Generator from html
+**Description:** this service process a html content and generate a PDF
 
 ### Used Tecnologies
 - Java SpringBoot

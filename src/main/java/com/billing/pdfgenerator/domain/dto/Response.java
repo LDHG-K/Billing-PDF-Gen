@@ -9,10 +9,10 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Builder
+
 public class Response {
 
     private String status;
     private LocalDateTime creationDate;
     private byte[] pdfBytes;
-    
 }
